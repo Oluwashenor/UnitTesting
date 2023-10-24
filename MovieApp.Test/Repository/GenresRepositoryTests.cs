@@ -61,6 +61,35 @@ namespace MovieApp.Tests.Repository
             result.Should().BeOfType<Task<Genre>>();
         }
 
+        [Fact]
+        public async Task GenreRepository_Delete_ReturnsBool()
+        {
+            //Arrange
+            var context = await GetDbContext();
+            var count = await context.Genres.CountAsync();
+            var repository = new GenreRepository(context);
+            //Act
+            var genre = await context.Genres.LastAsync();
+            var result = await repository.Delete(genre.Id);
+            //Assert
+            result.Should().Be(true);
+            var newCount = await context.Genres.CountAsync();
+            newCount.Should().BeLessThan(count);
+        }
+
+        [Fact]
+        public async Task GenreRepository_GetAll_ReturnsOk()
+        {
+            //Arrange 
+            var context = await GetDbContext();
+            var repository = new GenreRepository(context);
+            //Act
+            var result = await repository.GetAll();
+            result.Should().NotBeNull();
+            result.Should().BeOfType<List<Genre>>();
+            result.Should().HaveCountGreaterThan(0);
+        }
+
 
         private List<Genre> Genres()
         {
