@@ -1,6 +1,8 @@
-﻿using FluentAssertions;
+﻿using FakeItEasy;
+using FluentAssertions;
 using FluentAssertions.Extensions;
 using MealApp.Domain;
+using MealApp.Repository;
 using MealApp.Services;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,13 @@ namespace MealApp.Tests.ServicesTests
     public class MealServiceTests
     {
         private readonly MealService _mealService;
+        private readonly IMealRepository _mealRepository;
+        //You should not insert your repository directly here due to seperations of concerns 
 
         public MealServiceTests()
         {
-            _mealService = new MealService();
+            _mealRepository = A.Fake<IMealRepository>();   
+            _mealService = new MealService(_mealRepository);
         }
         [Fact]
         public void MealService_GetRandomMeal_ReturnString()
@@ -108,6 +113,19 @@ namespace MealApp.Tests.ServicesTests
             //result.Should().BeOfType<IEnumerable<Meal>>();
             //result.Should().ContainEquivalentOf(expected);
             result.Should().Contain(x => x.Name == "Shawarma");
+        }
+
+        [Fact]
+        public void MealService_OrderMeal_ReturnString()
+        {
+            //Arrange
+            A.CallTo(() => _mealRepository.OffersOnlineDelivery()).Returns(true); 
+            //What the guy above does, when it see the method "OffersOnlineDelivery" it just returns true
+            //Act
+            var result = _mealService.OrderMeal();
+
+            //Assert
+            result.Should().NotBeNullOrWhiteSpace();
         }
     }
 }

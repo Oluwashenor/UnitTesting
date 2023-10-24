@@ -1,4 +1,5 @@
 ﻿using MealApp.Domain;
+using MealApp.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,29 @@ namespace MealApp.Services;
 
 public class MealService
 {
+    private readonly IMealRepository _mealRepository;
+
+    public MealService(IMealRepository mealRepository)
+    {
+        _mealRepository = mealRepository;
+    }
     public string GetRandomMeal() 
     {
         List<string> meals = new List<string> { "Rice", "Dodo", "Beef Jerky", "Potato" };
         return meals[Random.Shared.Next(0, meals.Count)];
+    }
+
+    public string OrderMeal()
+    {
+        var offersDelivery = _mealRepository.OffersOnlineDelivery();
+        if (offersDelivery)
+        {
+            return GetRandomMeal();
+        }
+        else
+        {
+            return "Failed to retrieve random food";
+        }
     }
 
     public string GetDrink()
