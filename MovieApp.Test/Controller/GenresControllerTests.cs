@@ -25,7 +25,7 @@ public class GenresControllerTests
         _genresController = new GenresController(_genreRepository);
 
     }
-
+     
     [Fact]
     public void GenresController_Index_ReturnsSuccess()
     {
