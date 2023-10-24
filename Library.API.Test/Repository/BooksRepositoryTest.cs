@@ -5,29 +5,18 @@ using Library.API.Models;
 using Library.API.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Library.API.Test.Repository
 {
-    public class BooksRepository
+    public class BooksRepositoryTest
     {
-        private readonly IBooksRepository _booksRepository;
-        public BooksRepository()
-        {
-            _booksRepository = A.Fake<IBooksRepository>();
-        }
-
         private async  Task<LibraryAPIContext> GetDbContext()
         {
             var options = new DbContextOptionsBuilder<LibraryAPIContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
             var context =new LibraryAPIContext(options);
             await context.Database.EnsureCreatedAsync();
-            if(context.Books != null)
+            if(!context.Books.Any())
             {
                 context.Books.AddRange(new[]
                 {
@@ -42,6 +31,7 @@ namespace Library.API.Test.Repository
                          Author = "Author"
                     },
                 });
+                await context.SaveChangesAsync();
             }
             return context;
         }
@@ -52,12 +42,11 @@ namespace Library.API.Test.Repository
             //Arrange 
             var context = await GetDbContext();
             var books = A.Fake<IEnumerable<Book>>();
-
+            var repository = new BooksRepository(context);
             //Act
-            var result = await _booksRepository.GetAll();
+            var result = await repository.GetAll();
             result.Should().NotBeNull();
-            var resultObject = result as OkObjectResult;
-            resultObject?.Value.Should().BeOfType<IEnumerable<Book>>();
+            result.Should().BeOfType<List<Book>>();
         }
     }
 }

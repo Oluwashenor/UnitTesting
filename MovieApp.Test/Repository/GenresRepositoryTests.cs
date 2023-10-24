@@ -14,11 +14,6 @@ namespace MovieApp.Tests.Repository
 {
     public class GenresRepositoryTests
     {
-        private readonly IGenreRepository _genreRepository;
-        public GenresRepositoryTests()
-        {
-            _genreRepository = A.Fake<IGenreRepository>();
-        }
         private async Task<MovieDbContext> GetDbContext()
         {
             var options = new DbContextOptionsBuilder<MovieDbContext>()
@@ -65,16 +60,6 @@ namespace MovieApp.Tests.Repository
             result.Should().NotBeNull();
             result.Should().BeOfType<Task<Genre>>();
         }
-
-
-
-
-
-
-
-
-
-
 
 
         private List<Genre> Genres()

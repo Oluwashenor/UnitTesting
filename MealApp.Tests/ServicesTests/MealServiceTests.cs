@@ -4,128 +4,122 @@ using FluentAssertions.Extensions;
 using MealApp.Domain;
 using MealApp.Repository;
 using MealApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MealApp.Tests.ServicesTests
+namespace MealApp.Tests.ServicesTests;
+
+public class MealServiceTests
 {
-    public class MealServiceTests
+    private readonly MealService _mealService;
+    private readonly IMealRepository _mealRepository;
+    //You should not insert your repository directly here due to seperations of concerns 
+
+    public MealServiceTests()
     {
-        private readonly MealService _mealService;
-        private readonly IMealRepository _mealRepository;
-        //You should not insert your repository directly here due to seperations of concerns 
+        _mealRepository = A.Fake<IMealRepository>();   
+        _mealService = new MealService(_mealRepository);
+    }
+    [Fact]
+    public void MealService_GetRandomMeal_ReturnString()
+    {
+        //Arrange - variables, classes, mocks 
 
-        public MealServiceTests()
-        {
-            _mealRepository = A.Fake<IMealRepository>();   
-            _mealService = new MealService(_mealRepository);
-        }
-        [Fact]
-        public void MealService_GetRandomMeal_ReturnString()
-        {
-            //Arrange - variables, classes, mocks 
+        //Act
+        var result = _mealService.GetRandomMeal();
 
-            //Act
-            var result = _mealService.GetRandomMeal();
+        //Assert
+        result.Should().NotBeNullOrWhiteSpace();
+    } 
+    
+    [Fact]
+    public void MealService_GetDrink_ReturnString()
+    {
+        //Arrange - variables, classes, mocks
 
-            //Assert
-            result.Should().NotBeNullOrWhiteSpace();
-        } 
+        //Act
+        var result = _mealService.GetDrink();
+
+        //Assert
+        result.Should().NotBeNullOrWhiteSpace();
+        result.Should().Be("Success: Coke");
+        result.Should().Contain("Success", Exactly.Once());
+    }
+
+    [Theory] // Just like facts but used when you want to pass in variables 
+    [InlineData(5, 2000, 10000)] // Variable data, last one is the expected
+    [InlineData(2, 1500, 3000)]
+    public void MailService_CalculateInvoice_ReturnInt(int plates, int amount, int expected)
+    {
+        //Arrange 
         
-        [Fact]
-        public void MealService_GetDrink_ReturnString()
+        //Act
+        var result = _mealService.CalculateInvoice(plates, amount);
+
+        //Assert
+        result.Should().Be(expected);
+        result.Should().BeGreaterThan(0);
+        result.Should().NotBeInRange(-1000000, 0);
+    }
+
+    [Fact]
+    public void MealService_GetTime_ReturnString()
+    {
+        //Arrange - variables, classes, mocks
+
+        //Act
+        var result = _mealService.GetTime();
+
+        //Assert
+        result.Should().BeAfter(1.January(2023));
+    }
+
+    [Fact]
+    public void MealService_GetMeal_ReturnObject()
+    {
+        //Arrange
+        var expected = new Meal()
         {
-            //Arrange - variables, classes, mocks
+            Amount = 5000,
+            Name = "Rice"
+        }; 
 
-            //Act
-            var result = _mealService.GetDrink();
+        //Act
+        var result = _mealService.GetMeal();
 
-            //Assert
-            result.Should().NotBeNullOrWhiteSpace();
-            result.Should().Be("Success: Coke");
-            result.Should().Contain("Success", Exactly.Once());
-        }
+        //Assert
+        result.Should().BeOfType<Meal>();
+        result.Should().BeEquivalentTo(expected);
+        result.Amount.Should().Be(expected.Amount);
+    }
 
-        [Theory] // Just like facts but used when you want to pass in variables 
-        [InlineData(5, 2000, 10000)] // Variable data, last one is the expected
-        [InlineData(2, 1500, 3000)]
-        public void MailService_CalculateInvoice_ReturnInt(int plates, int amount, int expected)
+    [Fact]
+    public void MealService_GetMeals_ReturnObject()
+    {
+        //Arrange
+        var expected = new Meal()
         {
-            //Arrange 
-            
-            //Act
-            var result = _mealService.CalculateInvoice(plates, amount);
+            Amount = 5000,
+            Name = "Rice"
+        };
 
-            //Assert
-            result.Should().Be(expected);
-            result.Should().BeGreaterThan(0);
-            result.Should().NotBeInRange(-1000000, 0);
-        }
+        //Act
+        var result = _mealService.GetMeals();
 
-        [Fact]
-        public void MealService_GetTime_ReturnString()
-        {
-            //Arrange - variables, classes, mocks
+        //Assert
+        //result.Should().BeOfType<IEnumerable<Meal>>();
+        //result.Should().ContainEquivalentOf(expected);
+        result.Should().Contain(x => x.Name == "Shawarma");
+    }
 
-            //Act
-            var result = _mealService.GetTime();
+    [Fact]
+    public void MealService_OrderMeal_ReturnString()
+    {
+        //Arrange
+        A.CallTo(() => _mealRepository.OffersOnlineDelivery()).Returns(true); 
+        //What the guy above does, when it see the method "OffersOnlineDelivery" it just returns true
+        //Act
+        var result = _mealService.OrderMeal();
 
-            //Assert
-            result.Should().BeAfter(1.January(2023));
-        }
-
-        [Fact]
-        public void MealService_GetMeal_ReturnObject()
-        {
-            //Arrange
-            var expected = new Meal()
-            {
-                Amount = 5000,
-                Name = "Rice"
-            }; 
-
-            //Act
-            var result = _mealService.GetMeal();
-
-            //Assert
-            result.Should().BeOfType<Meal>();
-            result.Should().BeEquivalentTo(expected);
-            result.Amount.Should().Be(expected.Amount);
-        }
-
-        [Fact]
-        public void MealService_GetMeals_ReturnObject()
-        {
-            //Arrange
-            var expected = new Meal()
-            {
-                Amount = 5000,
-                Name = "Rice"
-            };
-
-            //Act
-            var result = _mealService.GetMeals();
-
-            //Assert
-            //result.Should().BeOfType<IEnumerable<Meal>>();
-            //result.Should().ContainEquivalentOf(expected);
-            result.Should().Contain(x => x.Name == "Shawarma");
-        }
-
-        [Fact]
-        public void MealService_OrderMeal_ReturnString()
-        {
-            //Arrange
-            A.CallTo(() => _mealRepository.OffersOnlineDelivery()).Returns(true); 
-            //What the guy above does, when it see the method "OffersOnlineDelivery" it just returns true
-            //Act
-            var result = _mealService.OrderMeal();
-
-            //Assert
-            result.Should().NotBeNullOrWhiteSpace();
-        }
+        //Assert
+        result.Should().NotBeNullOrWhiteSpace();
     }
 }

@@ -4,11 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using MovieApp.Controllers;
 using MovieApp.Models;
 using MovieApp.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieApp.Tests.Controller;
 
@@ -50,5 +45,51 @@ public class GenresControllerTests
 
         //Assert
         result.Should().BeOfType<Task<IActionResult>>();
+    }
+
+    [Fact] 
+    public async Task GenresController_Create_ReturnsSuccess()
+    {
+        //Arrange
+        var genre = A.Fake<Genre>();
+        A.CallTo(() => _genreRepository.Create(genre)).Returns(true);
+
+        //Act
+        var result = await _genresController.Create(genre);
+
+        //Assert
+        result.Should().BeOfType<RedirectToActionResult>();
+    }
+
+    [Fact]
+    public async Task GenresController_Edit_ReturnsSuccess()
+    {
+        // Arrange
+        var id = 1;
+        var genre = A.Fake<Genre>();
+        genre.Id = id;
+        A.CallTo(() => _genreRepository.Update(genre)).Returns(true);
+
+        //Act
+        var result = await _genresController.Edit(id, genre);
+
+        //Assert
+        result.Should().BeOfType<RedirectToActionResult>();
+
+    }
+
+    [Fact]
+    public async Task GenresController_Delete_ReturnsSuccess()
+    {
+        // Arrange
+        var id = 1;
+        A.CallTo(() => _genreRepository.Delete(id)).Returns(true);
+
+        //Act
+        var result = await _genresController.DeleteConfirmed(id);
+
+        //Assert
+        result.Should().BeOfType<RedirectToActionResult>();
+
     }
 }

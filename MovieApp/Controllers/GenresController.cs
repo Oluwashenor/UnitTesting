@@ -103,7 +103,9 @@ namespace MovieApp.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var genre = await _genreRepository.Delete(id);
-            return RedirectToAction(nameof(Index));
+            if(genre)
+                return RedirectToAction(nameof(Index));
+            return NotFound();
         }
     }
 }
