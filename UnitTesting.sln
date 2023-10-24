@@ -9,9 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealApp", "MealApp\MealApp.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealApp.Tests", "MealApp.Tests\MealApp.Tests.csproj", "{598ECD3C-21E6-43B8-A2E9-7B240AB29FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieApp.Tests", "MovieApp.Test\MovieApp.Tests.csproj", "{9EF6E0AB-1477-42D1-9319-DBF43B9E8C9E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieApp.Tests", "MovieApp.Test\MovieApp.Tests.csproj", "{9EF6E0AB-1477-42D1-9319-DBF43B9E8C9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieApp", "MovieApp\MovieApp.csproj", "{635F0E51-28BE-4A7E-95CF-2054E1520FC8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieApp", "MovieApp\MovieApp.csproj", "{635F0E51-28BE-4A7E-95CF-2054E1520FC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.API", "Library.API\Library.API.csproj", "{7C712C2F-07BB-4E4C-8E33-A9EA1CAD5AAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.API.Test", "Library.API.Test\Library.API.Test.csproj", "{0B3EB7BE-77BC-4ACF-8A5B-FE2E6DF59E67}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{635F0E51-28BE-4A7E-95CF-2054E1520FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{635F0E51-28BE-4A7E-95CF-2054E1520FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{635F0E51-28BE-4A7E-95CF-2054E1520FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C712C2F-07BB-4E4C-8E33-A9EA1CAD5AAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C712C2F-07BB-4E4C-8E33-A9EA1CAD5AAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C712C2F-07BB-4E4C-8E33-A9EA1CAD5AAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C712C2F-07BB-4E4C-8E33-A9EA1CAD5AAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B3EB7BE-77BC-4ACF-8A5B-FE2E6DF59E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B3EB7BE-77BC-4ACF-8A5B-FE2E6DF59E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B3EB7BE-77BC-4ACF-8A5B-FE2E6DF59E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B3EB7BE-77BC-4ACF-8A5B-FE2E6DF59E67}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
