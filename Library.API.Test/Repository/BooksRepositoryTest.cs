@@ -97,5 +97,20 @@ namespace Library.API.Test.Repository
             //Assert
             result.Should().BeOfType<Book>();
         }
+
+        [Fact]
+        public async Task GenreRepository_Update_ReturnBool()
+        {
+            //Arrange 
+            var context = await GetDbContext();
+            var repository = new BooksRepository(context);
+            var genre = await context.Books.LastAsync();
+            genre.Name = "New Book";
+            //Act
+            var result = await repository.Update(genre);
+
+            //Assert
+            result.Should().BeTrue();
+        }
     }
 }

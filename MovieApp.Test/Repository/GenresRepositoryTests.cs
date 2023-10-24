@@ -47,6 +47,21 @@ namespace MovieApp.Tests.Repository
         }
 
         [Fact]
+        public async Task GenreRepository_Update_ReturnBool()
+        {
+            //Arrange 
+            var context = await GetDbContext();
+            var genreRepository = new GenreRepository(context);
+            var genre = await context.Genres.LastAsync();
+            genre.Name = "Rom Com ROM COM";
+            //Act
+            var result = await genreRepository.Update(genre);
+
+            //Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
         public async Task GenreRepository_Get_ReturnBool()
         {
             //Arrange 
